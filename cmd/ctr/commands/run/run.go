@@ -32,6 +32,7 @@ import (
 	clabels "github.com/containerd/containerd/labels"
 	"github.com/containerd/containerd/oci"
 	gocni "github.com/containerd/go-cni"
+	"github.com/containerd/log"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -164,7 +165,7 @@ var Command = cli.Command{
 			return err
 		}
 		defer cancel()
-
+		log.G(ctx).Infof("In the run.go before newcontainer")
 		container, err := NewContainer(ctx, client, context)
 		if err != nil {
 			return err

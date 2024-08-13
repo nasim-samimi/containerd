@@ -107,7 +107,7 @@ func NewContainer(ctx gocontext.Context, client *containerd.Client, context *cli
 	if sandbox := context.String("sandbox"); sandbox != "" {
 		cOpts = append(cOpts, containerd.WithSandbox(sandbox))
 	}
-
+	log.G(ctx).Infof("inside newcontainer but outside if")
 	if config {
 		cOpts = append(cOpts, containerd.WithContainerLabels(commands.LabelArgs(context.StringSlice("label"))))
 		opts = append(opts, oci.WithSpecFromFile(context.String("config")))
@@ -251,7 +251,7 @@ func NewContainer(ctx gocontext.Context, client *containerd.Client, context *cli
 				RtAnnotation = annos
 			}
 		}
-		log.G(ctx).Infof("rtdevice=%v", rtdevice)
+		log.G(ctx).Infof("Rtdevice for %v ", rtdevice)
 		if rtdevice {
 			containerName := context.String("name")
 			containerName2 := ctx.Value("containerName")
