@@ -249,14 +249,21 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 		containerd.WithRuntime(sandboxInfo.Runtime.Name, runtimeOptions),
 		containerd.WithContainerLabels(containerLabels),
 		containerd.WithContainerExtension(containerMetadataExtension, &meta))
-	log.G(ctx).Infof("withspecopts:%v", containerd.WithSpec(spec, specOpts...))
-	log.G(ctx).Infof("specopts:%v", specOpts)
-	log.G(ctx).Infof("spec:%v", spec)
 	annotations := sandboxConfig.GetAnnotations()
 	if annotations != nil {
 		log.G(ctx).Infof("Pod Annotations: %+v", annotations)
 	} else {
 		log.G(ctx).Infof("No annotations found in sandboxConfig")
+	}
+
+	containerMetadata := config.GetMetadata()
+	if containerMetadata != nil {
+		annotations := config.GetAnnotations()
+		if annotations != nil {
+			log.G(ctx).Debugf("Container Annotations: %+v", annotations)
+		} else {
+			log.G(ctx).Debugf("No annotations found in container config")
+		}
 	}
 
 	opts = append(opts, c.nri.WithContainerAdjustment())
