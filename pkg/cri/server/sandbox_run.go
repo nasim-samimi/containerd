@@ -735,6 +735,7 @@ func hostAccessingSandbox(config *runtime.PodSandboxConfig) bool {
 // If the sandbox contains untrusted workload, runtime for untrusted workload will be returned,
 // or else default runtime will be returned.
 func (c *criService) getSandboxRuntime(config *runtime.PodSandboxConfig, runtimeHandler string) (criconfig.Runtime, error) {
+	fmt.Println("untrusted workload:", untrustedWorkload(config))
 	if untrustedWorkload(config) {
 		// If the untrusted annotation is provided, runtimeHandler MUST be empty.
 		if runtimeHandler != "" && runtimeHandler != criconfig.RuntimeUntrusted {

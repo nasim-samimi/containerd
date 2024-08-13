@@ -150,13 +150,14 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 
 	// Generate container mounts.
 	mounts := c.containerMounts(sandboxID, config)
-
+	log.G(ctx).Infof("ociruntime annotation not trusted:%v", c.config.ContainerdConfig.Runtimes[sandbox.Metadata.RuntimeHandler].PodAnnotations)
 	ociRuntime, err := c.getSandboxRuntime(sandboxConfig, sandbox.Metadata.RuntimeHandler)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get sandbox runtime: %w", err)
 	}
 	log.G(ctx).Debugf("Use OCI runtime %+v for sandbox %q and container %q", ociRuntime, sandboxID, id)
-
+	ociannotation := ociRuntime.PodAnnotations
+	log.G(ctx).Infof("oci annotations:%+v", ociannotation)
 	spec, err := c.containerSpec(id, sandboxID, sandboxPid, sandbox.NetNSPath, containerName, containerdImage.Name(), config, sandboxConfig,
 		&image.ImageSpec.Config, append(mounts, volumeMounts...), ociRuntime)
 	if err != nil {
@@ -255,8 +256,7 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 	} else {
 		log.G(ctx).Infof("No annotations found in sandboxConfig")
 	}
-	ociannotation := ociRuntime.PodAnnotations
-	log.G(ctx).Infof("oci annotations:%+v", ociannotation)
+
 	log.G(ctx).Infof("enable cdi devices:%+v", c.config.EnableCDI)
 	annotation := config.Annotations
 	cdi := config.CDIDevices
