@@ -22,11 +22,12 @@ import (
 	gocontext "context"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/containerd/log"
 
 	"github.com/containerd/containerd"
 	"github.com/containerd/containerd/cmd/ctr/commands"
@@ -250,7 +251,7 @@ func NewContainer(ctx gocontext.Context, client *containerd.Client, context *cli
 				RtAnnotation = annos
 			}
 		}
-		log.Println("rtdevice", rtdevice)
+		log.G(ctx).Infof("rtdevice=%v", rtdevice)
 		if rtdevice {
 			containerName := context.String("name")
 			containerName2 := ctx.Value("containerName")
