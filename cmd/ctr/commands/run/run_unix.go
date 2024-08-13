@@ -22,6 +22,7 @@ import (
 	gocontext "context"
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -249,7 +250,7 @@ func NewContainer(ctx gocontext.Context, client *containerd.Client, context *cli
 				RtAnnotation = annos
 			}
 		}
-		fmt.Println("rtdevice", rtdevice)
+		log.Println("rtdevice", rtdevice)
 		if rtdevice {
 			containerName := context.String("name")
 			containerName2 := ctx.Value("containerName")
