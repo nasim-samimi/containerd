@@ -249,16 +249,15 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 		containerd.WithRuntime(sandboxInfo.Runtime.Name, runtimeOptions),
 		containerd.WithContainerLabels(containerLabels),
 		containerd.WithContainerExtension(containerMetadataExtension, &meta))
-	for _, op := range opts {
-		log.G(ctx).Infof("opts:%+v", op)
-	}
 	annotations := sandboxConfig.GetAnnotations()
 	if annotations != nil {
 		log.G(ctx).Infof("Pod Annotations: %+v", annotations)
 	} else {
 		log.G(ctx).Infof("No annotations found in sandboxConfig")
 	}
-
+	ociannotation := ociRuntime.PodAnnotations
+	log.G(ctx).Infof("oci annotations:%+v", ociannotation)
+	log.G(ctx).Infof("enable cdi devices:%+v", c.config.EnableCDI)
 	annotation := config.Annotations
 	cdi := config.CDIDevices
 	log.G(ctx).Infof("CDI:%+v", cdi)
