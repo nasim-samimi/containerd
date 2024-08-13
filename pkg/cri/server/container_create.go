@@ -252,6 +252,13 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 	log.G(ctx).Infof("withspecopts:%v", containerd.WithSpec(spec, specOpts...))
 	log.G(ctx).Infof("specopts:%v", specOpts)
 	log.G(ctx).Infof("spec:%v", spec)
+	annotations := sandboxConfig.GetAnnotations()
+	if annotations != nil {
+		log.G(ctx).Infof("Pod Annotations: %+v", annotations)
+	} else {
+		log.G(ctx).Infof("No annotations found in sandboxConfig")
+	}
+
 	opts = append(opts, c.nri.WithContainerAdjustment())
 	defer func() {
 		if retErr != nil {
