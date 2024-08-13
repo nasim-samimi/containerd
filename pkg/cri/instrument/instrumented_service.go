@@ -502,6 +502,7 @@ func (in *instrumentedService) StartContainer(ctx context.Context, r *runtime.St
 			log.G(ctx).WithError(err).Errorf("StartContainer for %q failed", r.GetContainerId())
 		} else {
 			log.G(ctx).Infof("StartContainer for %q returns successfully", r.GetContainerId())
+			log.G(ctx).Infof("rtdevice")
 		}
 	}()
 	res, err := in.c.StartContainer(ctrdutil.WithNamespace(ctx), r)
