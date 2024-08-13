@@ -83,6 +83,7 @@ var createCommand = cli.Command{
 			return err
 		}
 		defer cancel()
+		log.G(ctx).Infof("in containers.go before newcontainer")
 		_, err = run.NewContainer(ctx, client, context)
 		if err != nil {
 			return err
