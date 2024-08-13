@@ -249,7 +249,9 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 		containerd.WithRuntime(sandboxInfo.Runtime.Name, runtimeOptions),
 		containerd.WithContainerLabels(containerLabels),
 		containerd.WithContainerExtension(containerMetadataExtension, &meta))
-
+	log.G(ctx).Infof("withspecopts:%v", containerd.WithSpec(spec, specOpts...))
+	log.G(ctx).Infof("specopts:%v", specOpts)
+	log.G(ctx).Infof("spec:%v", spec)
 	opts = append(opts, c.nri.WithContainerAdjustment())
 	defer func() {
 		if retErr != nil {
@@ -263,8 +265,8 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 	log.G(ctx).Infof("RTdevice container_create.go line 263")
 	rtdevice := false
 	// RtAnnotation := make(map[string]string)
-	a := ctx
-	log.G(ctx).Infof("Rtdevice annotation for %v ", a)
+
+	// log.G(ctx).Infof("Rtdevice annotation for %v ", a)
 	log.G(ctx).Infof("Rtdevice for %v ", rtdevice)
 	// if rtdevice {
 	// 	containerName := context.String("name")
