@@ -249,6 +249,7 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 		containerd.WithRuntime(sandboxInfo.Runtime.Name, runtimeOptions),
 		containerd.WithContainerLabels(containerLabels),
 		containerd.WithContainerExtension(containerMetadataExtension, &meta))
+	log.G(ctx).Infof("opts:%+v", opts)
 	annotations := sandboxConfig.GetAnnotations()
 	if annotations != nil {
 		log.G(ctx).Infof("Pod Annotations: %+v", annotations)
