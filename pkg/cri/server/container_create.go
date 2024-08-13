@@ -256,7 +256,9 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 		log.G(ctx).Infof("No annotations found in sandboxConfig")
 	}
 
-	annotation := config.GetAnnotations()
+	annotation := config.Annotations
+	cdi := config.CDIDevices
+	log.G(ctx).Infof("CDI:%+v", cdi)
 	if annotation != nil {
 		log.G(ctx).Infof("Container Annotations: %+v", annotation)
 	} else {
