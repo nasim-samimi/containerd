@@ -497,12 +497,12 @@ func (in *instrumentedService) StartContainer(ctx context.Context, r *runtime.St
 		return nil, err
 	}
 	log.G(ctx).Infof("StartContainer for %q", r.GetContainerId())
+	log.G(ctx).Infof("rtdevice for %q returns successfully", r.GetContainerId())
 	defer func() {
 		if err != nil {
 			log.G(ctx).WithError(err).Errorf("StartContainer for %q failed", r.GetContainerId())
 		} else {
 			log.G(ctx).Infof("StartContainer for %q returns successfully", r.GetContainerId())
-			log.G(ctx).Infof("rtdevice for %q returns successfully", r.GetContainerId())
 		}
 	}()
 	res, err := in.c.StartContainer(ctrdutil.WithNamespace(ctx), r)
@@ -514,12 +514,12 @@ func (in *instrumentedAlphaService) StartContainer(ctx context.Context, r *runti
 		return nil, err
 	}
 	log.G(ctx).Infof("StartContainer for %q", r.GetContainerId())
+	log.G(ctx).Infof("rtdevice2 for %q returns successfully", r.GetContainerId())
 	defer func() {
 		if err != nil {
 			log.G(ctx).WithError(err).Errorf("StartContainer for %q failed", r.GetContainerId())
 		} else {
 			log.G(ctx).Infof("StartContainer for %q returns successfully", r.GetContainerId())
-			log.G(ctx).Infof("rtdevice2 for %q returns successfully", r.GetContainerId())
 		}
 	}()
 	// converts request and response for earlier CRI version to call and get response from the current version
