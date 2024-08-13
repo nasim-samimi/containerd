@@ -263,7 +263,7 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 	log.G(ctx).Infof("RTdevice container_create.go line 263")
 	rtdevice := false
 	// RtAnnotation := make(map[string]string)
-	a := ctx.Value("annotation")
+	a := ctx
 	log.G(ctx).Infof("Rtdevice annotation for %v ", a)
 	log.G(ctx).Infof("Rtdevice for %v ", rtdevice)
 	// if rtdevice {
