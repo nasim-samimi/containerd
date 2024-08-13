@@ -234,12 +234,30 @@ func NewContainer(ctx gocontext.Context, client *containerd.Client, context *cli
 				oci.WithEnv([]string{fmt.Sprintf("HOSTNAME=%s", hostname)}),
 			)
 		}
+		rtdevice := false
+		RtAnnotation := make(map[string]string)
 		if annoStrings := context.StringSlice("annotation"); len(annoStrings) > 0 {
 			annos, err := commands.AnnotationArgs(annoStrings)
 			if err != nil {
 				return nil, err
 			}
+			fmt.Println(annos)
 			opts = append(opts, oci.WithAnnotations(annos))
+			if _, exists := annos["RT-Device"]; exists {
+				fmt.Println("RT-Device exists")
+				rtdevice = true
+				RtAnnotation = annos
+			}
+		}
+		if rtdevice {
+			containerName := context.String("name")
+			containerName2 := ctx.Value("containerName")
+			fmt.Println("containerName2", containerName2)
+			fmt.Println("containerName", containerName)
+			opts = append(opts, oci.WithCPUs(RtAnnotation[containerName+"-CPUs"]))
+			runtime, _ := strconv.Atoi(RtAnnotation[containerName+"-runtime"])
+			period, _ := strconv.Atoi(RtAnnotation[containerName+"-period"])
+			opts = append(opts, oci.WithCPURT(int64(runtime), uint64(period)))
 		}
 
 		if context.Bool("cni") {
