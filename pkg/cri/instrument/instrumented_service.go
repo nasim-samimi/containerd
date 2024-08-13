@@ -497,7 +497,7 @@ func (in *instrumentedService) StartContainer(ctx context.Context, r *runtime.St
 		return nil, err
 	}
 	log.G(ctx).Infof("StartContainer for %q", r.GetContainerId())
-	log.G(ctx).Infof("rtdevice for %q returns successfully", r.GetContainerId())
+	log.G(ctx).Infof("Rtdevice for %q returns successfully", r.GetContainerId())
 	defer func() {
 		if err != nil {
 			log.G(ctx).WithError(err).Errorf("StartContainer for %q failed", r.GetContainerId())
