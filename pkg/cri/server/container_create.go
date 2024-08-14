@@ -157,6 +157,8 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 	}
 	log.G(ctx).Debugf("Use OCI runtime %+v for sandbox %q and container %q", ociRuntime, sandboxID, id)
 	ociannotation := ociRuntime.PodAnnotations
+	cannotat := ociRuntime.ContainerAnnotations
+	log.G(ctx).Infof("oci container annotations:%+v", cannotat)
 	log.G(ctx).Infof("oci annotations:%+v", ociannotation)
 	spec, err := c.containerSpec(id, sandboxID, sandboxPid, sandbox.NetNSPath, containerName, containerdImage.Name(), config, sandboxConfig,
 		&image.ImageSpec.Config, append(mounts, volumeMounts...), ociRuntime)
