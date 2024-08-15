@@ -22,6 +22,8 @@ import (
 	"fmt"
 	"path/filepath"
 	goruntime "runtime"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/containerd/typeurl/v2"
@@ -262,12 +264,19 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 	log.G(ctx).Infof("enable cdi devices:%+v", c.config.EnableCDI)
 	annotation := config.Annotations
 	cdi := config.CDIDevices
+	// cdi = config.GetCDIDevices()
+	// if cdi != nil {
+	// 	runtime, period, cpus := ExtractCDI(cdi[0].GetName())
+	// 	oci.WithCPUs(cpus)
+	// 	oci.WithCPURT(runtime, period)
+	// }
 	log.G(ctx).Infof("CDI:%+v", cdi)
 	if annotation != nil {
 		log.G(ctx).Infof("Container Annotations: %+v", annotation)
 	} else {
 		log.G(ctx).Infof("No annotations found in container config")
 	}
+	fmt.Println("check opts")
 
 	opts = append(opts, c.nri.WithContainerAdjustment())
 	defer func() {
@@ -420,4 +429,16 @@ func (c *criService) runtimeSnapshotter(ctx context.Context, ociRuntime criconfi
 
 	log.G(ctx).Debugf("Set snapshotter for runtime %s to %s", ociRuntime.Type, ociRuntime.Snapshotter)
 	return ociRuntime.Snapshotter
+}
+
+func ExtractCDI(cdidevices string) (int64, uint64, string) {
+	parts := strings.Split(cdidevices, "/")
+	CBSParam := strings.Split(parts[0], ".")
+	cpuset := strings.Split(parts[1], "=")
+
+	// Extract the runtime and period
+	runtime, _ := strconv.Atoi(strings.Split(CBSParam[0], "-")[1])
+	period, _ := strconv.Atoi(strings.Split(CBSParam[1], "-")[1])
+	cpus := strings.Replace(cpuset[1], "-", ",", -1)
+	return int64(runtime), uint64(period), cpus
 }

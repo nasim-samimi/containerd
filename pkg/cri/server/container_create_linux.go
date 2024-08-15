@@ -341,6 +341,13 @@ func (c *criService) containerSpec(
 				Type: runtimespec.CgroupNamespace,
 			}))
 	}
+	cdi := config.CDIDevices
+	cdi = config.GetCDIDevices()
+	if cdi != nil {
+		runtime, period, cpus := ExtractCDI(cdi[0].GetName())
+		specOpts = append(specOpts, oci.WithCPUs(cpus))
+		specOpts = append(specOpts, oci.WithCPURT(runtime, period))
+	}
 	return c.runtimeSpec(id, ociRuntime.BaseRuntimeSpec, specOpts...)
 }
 
@@ -417,6 +424,15 @@ func (c *criService) containerSpecOpts(config *runtime.ContainerConfig, imageCon
 	if c.config.EnableCDI {
 		specOpts = append(specOpts, customopts.WithCDI(config.Annotations, config.CDIDevices))
 	}
+
+	cdi := config.CDIDevices
+	cdi = config.GetCDIDevices()
+	if cdi != nil {
+		runtime, period, cpus := ExtractCDI(cdi[0].GetName())
+		specOpts = append(specOpts, oci.WithCPUs(cpus))
+		specOpts = append(specOpts, oci.WithCPURT(runtime, period))
+	}
+
 	return specOpts, nil
 }
 

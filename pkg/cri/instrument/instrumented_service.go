@@ -19,6 +19,7 @@ package instrument
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/containerd/containerd/services/warning"
@@ -438,6 +439,7 @@ func (in *instrumentedService) CreateContainer(ctx context.Context, r *runtime.C
 	}
 	log.G(ctx).Infof("CreateContainer within sandbox %q for container %+v",
 		r.GetPodSandboxId(), r.GetConfig().GetMetadata())
+	fmt.Println("check config", r.GetConfig())
 	defer func() {
 		if err != nil {
 			log.G(ctx).WithError(err).Errorf("CreateContainer within sandbox %q for %+v failed",
