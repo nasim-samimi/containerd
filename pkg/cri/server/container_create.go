@@ -286,24 +286,7 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 			c.nri.UndoCreateContainer(deferCtx, &sandbox, id, spec)
 		}
 	}()
-
 	var cntr containerd.Container
-	log.G(ctx).Infof("RTdevice container_create.go line 263")
-	rtdevice := false
-	// RtAnnotation := make(map[string]string)
-
-	// log.G(ctx).Infof("Rtdevice annotation for %v ", a)
-	log.G(ctx).Infof("Rtdevice for %v ", rtdevice)
-	// if rtdevice {
-	// 	containerName := context.String("name")
-	// 	containerName2 := ctx.Value("containerName")
-	// 	fmt.Println("containerName2", containerName2)
-	// 	fmt.Println("containerName", containerName)
-	// 	opts = append(opts, oci.WithCPUs(RtAnnotation[containerName+"-CPUs"]))
-	// 	runtime, _ := strconv.Atoi(RtAnnotation[containerName+"-runtime"])
-	// 	period, _ := strconv.Atoi(RtAnnotation[containerName+"-period"])
-	// 	opts = append(opts, oci.WithCPURT(int64(runtime), uint64(period)))
-	// }
 	if cntr, err = c.client.NewContainer(ctx, id, opts...); err != nil {
 		return nil, fmt.Errorf("failed to create containerd container: %w", err)
 	}
@@ -348,7 +331,8 @@ func (c *criService) CreateContainer(ctx context.Context, r *runtime.CreateConta
 	}
 
 	containerCreateTimer.WithValues(ociRuntime.Type).UpdateSince(start)
-
+	cs, _ := s.Spec(ctx)
+	fmt.Printf("checkspecs with task: %s\n", cs)
 	return &runtime.CreateContainerResponse{ContainerId: id}, nil
 }
 
