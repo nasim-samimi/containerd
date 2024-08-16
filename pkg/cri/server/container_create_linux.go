@@ -344,10 +344,10 @@ func (c *criService) containerSpec(
 	cdi := config.CDIDevices
 	cdi = config.GetCDIDevices()
 	if cdi != nil {
-		// runtime, period, cpus := ExtractCDI(cdi[0].GetName())
-		_, _, cpus := ExtractCDI(cdi[0].GetName())
+		runtime, period, cpus := ExtractCDI(cdi[0].GetName())
+		// _, _, cpus := ExtractCDI(cdi[0].GetName())
 		specOpts = append(specOpts, oci.WithCPUs(cpus))
-		// specOpts = append(specOpts, oci.WithCPURT(runtime, period))
+		specOpts = append(specOpts, oci.WithCPURT(runtime, period))
 	}
 	return c.runtimeSpec(id, ociRuntime.BaseRuntimeSpec, specOpts...)
 }
@@ -429,10 +429,10 @@ func (c *criService) containerSpecOpts(config *runtime.ContainerConfig, imageCon
 	cdi := config.CDIDevices
 	cdi = config.GetCDIDevices()
 	if cdi != nil {
-		// runtime, period, cpus := ExtractCDI(cdi[0].GetName())
-		_, _, cpus := ExtractCDI(cdi[0].GetName())
+		runtime, period, cpus := ExtractCDI(cdi[0].GetName())
+		// _, _, cpus := ExtractCDI(cdi[0].GetName())
 		specOpts = append(specOpts, oci.WithCPUs(cpus))
-		// specOpts = append(specOpts, oci.WithCPURT(runtime, period))
+		specOpts = append(specOpts, oci.WithCPURT(runtime, period))
 	}
 
 	return specOpts, nil
