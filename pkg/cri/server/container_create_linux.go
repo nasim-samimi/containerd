@@ -348,6 +348,9 @@ func (c *criService) containerSpec(
 		// _, _, cpus := ExtractCDI(cdi[0].GetName())
 		specOpts = append(specOpts, oci.WithCPUs(cpus))
 		specOpts = append(specOpts, oci.WithCPURT(runtime, period))
+		fmt.Println("runtime:", runtime)
+		fmt.Println("period:", period)
+		fmt.Println("cpus:", cpus)
 	}
 	return c.runtimeSpec(id, ociRuntime.BaseRuntimeSpec, specOpts...)
 }
